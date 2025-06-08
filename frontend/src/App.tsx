@@ -6,15 +6,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { Navbar } from "./components/Navbar";
-import { Footer } from "./components/Footer";
+import Footer from "./components/Footer";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 // Pages
 import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Signup } from "./pages/Signup";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import { VerifyEmail } from "./pages/VerifyEmail";
-import { Dashboard } from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import { Skills } from "./pages/Skills";
 import { PostSkill } from "./pages/PostSkill";
 import { MyServices } from "./pages/MyServices";

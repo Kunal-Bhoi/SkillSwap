@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useToast } from '@/components/ui/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface User {
   id: number;
@@ -28,13 +29,49 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Add request interceptor to add token to all requests
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Add response interceptor to handle token expiration
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('authToken');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    checkAuth();
+    const initializeAuth = async () => {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        try {
+          const response = await api.get('/auth/me');
+          setUser(response.data);
+        } catch (error) {
+          localStorage.removeItem('authToken');
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const handleError = (error: unknown) => {
@@ -42,6 +79,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const axiosError = error as AxiosError<ErrorResponse>;
       if (axiosError.response?.status === 401) {
         setUser(null);
+        localStorage.removeItem('authToken');
       } else {
         toast({
           title: "Error",
@@ -58,22 +96,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const checkAuth = async () => {
-    try {
-      const response = await api.get('/auth/me');
-      setUser(response.data);
-    } catch (error) {
-      setUser(null);
-      handleError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const login = async (email: string, password: string) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      setUser(response.data.user);
+      const { token, user } = response.data;
+      localStorage.setItem('authToken', token);
+      setUser(user);
+      navigate('/dashboard');
     } catch (error) {
       handleError(error);
       throw error;
@@ -83,7 +112,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
     try {
       const response = await api.post('/auth/signup', { email, password, firstName, lastName });
-      setUser(response.data.user);
+      const { token, user } = response.data;
+      localStorage.setItem('authToken', token);
+      setUser(user);
+      navigate('/dashboard');
     } catch (error) {
       handleError(error);
       throw error;
@@ -93,7 +125,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     try {
       await api.post('/auth/logout');
+      localStorage.removeItem('authToken');
       setUser(null);
+      navigate('/');
     } catch (error) {
       handleError(error);
       throw error;
