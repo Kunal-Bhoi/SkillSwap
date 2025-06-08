@@ -109,6 +109,20 @@
                     <mainClass>com.skillswap.SkillSwapApplication</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.22.3</version>
+                <configuration>
+                    <url>jdbc:postgresql://ep-shiny-mud-a86r2nw6-pooler.eastus2.azure.neon.tech:5432/neondb?sslmode=require</url>
+                    <user>neondb_owner</user>
+                    <password>npg_Ngmio0kq5apF</password>
+                    <locations>
+                        <location>filesystem:src/main/resources/migrations</location>
+                    </locations>
+                    <cleanDisabled>false</cleanDisabled>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project> 
