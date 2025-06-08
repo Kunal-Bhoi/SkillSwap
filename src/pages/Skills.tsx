@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,13 +12,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 const Skills = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
+  const [selectedSkill, setSelectedSkill] = useState<any>(null);
 
   // Mock data - TODO: Replace with API call to GET /listings
   const skillListings = [
@@ -175,16 +187,95 @@ const Skills = () => {
     }
   });
 
+  const handleRequestService = async (skillId: number) => {
+    try {
+      // TODO: API call to POST /requests
+      console.log('Requesting service:', skillId);
+      
+      toast({
+        title: "Service Requested",
+        description: "Your request has been sent to the provider.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to request service. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleChat = (providerId: number) => {
+    navigate('/messages', { state: { recipientId: providerId } });
+  };
+
   const SkillCard = ({ listing }: { listing: any }) => (
     <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg hover:text-primary cursor-pointer">
-              <Link to={`/skills/${listing.id}`}>
-                {listing.title}
-              </Link>
-            </CardTitle>
+            <Dialog>
+              <DialogTrigger asChild>
+                <CardTitle className="text-lg hover:text-primary cursor-pointer">
+                  {listing.title}
+                </CardTitle>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>{listing.title}</DialogTitle>
+                  <DialogDescription>
+                    <div className="flex items-center mt-2">
+                      <Avatar className="h-8 w-8 mr-2">
+                        <AvatarImage src={listing.provider.avatar} />
+                        <AvatarFallback>
+                          {listing.provider.name.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <Link 
+                          to={`/profile/${listing.provider.id}`} 
+                          className="text-sm font-medium hover:text-primary"
+                        >
+                          {listing.provider.name}
+                        </Link>
+                        <div className="text-xs text-muted-foreground">
+                          ⭐ {listing.provider.rating} rating
+                        </div>
+                      </div>
+                    </div>
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="py-4">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {listing.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {listing.tags.map((tag: string, index: number) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <span>📍 {listing.location}</span>
+                    <Badge variant={listing.price === 'Free' ? 'secondary' : 'default'}>
+                      {listing.price}
+                    </Badge>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleChat(listing.provider.id)}
+                  >
+                    Chat with {listing.provider.name}
+                  </Button>
+                  <Button onClick={() => handleRequestService(listing.id)}>
+                    Request This Service
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
             <div className="flex items-center mt-2">
               <Avatar className="h-8 w-8 mr-2">
                 <AvatarImage src={listing.provider.avatar} />
