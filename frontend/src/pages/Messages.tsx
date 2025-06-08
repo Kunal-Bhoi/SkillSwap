@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 
-const Messages = () => {
+export function Messages() {
   // Mock data - TODO: Replace with API calls
   const [selectedChat, setSelectedChat] = useState<number | null>(1);
   const [newMessage, setNewMessage] = useState('');
@@ -230,6 +229,4 @@ const Messages = () => {
       </div>
     </div>
   );
-};
-
-export default Messages;
+}

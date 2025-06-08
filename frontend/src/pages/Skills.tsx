@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 
-const Skills = () => {
+export function Skills() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
@@ -473,6 +473,4 @@ const Skills = () => {
       </div>
     </div>
   );
-};
-
-export default Skills;
+}

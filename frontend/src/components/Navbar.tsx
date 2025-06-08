@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,8 +16,8 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const Navbar = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+export function Navbar() {
+  const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -33,7 +32,7 @@ const Navbar = () => {
 
   const NavLinks = ({ mobile = false, onLinkClick = () => {} }) => (
     <>
-      {isAuthenticated ? (
+      {user ? (
         <>
           <Link to="/skills" onClick={onLinkClick}>
             <Button variant="ghost" className={mobile ? "w-full justify-start" : ""}>
@@ -72,7 +71,7 @@ const Navbar = () => {
 
           {mobile && (
             <>
-              <Link to={`/profile/${user?.id}`} onClick={onLinkClick}>
+              <Link to={`/profile/${user.id}`} onClick={onLinkClick}>
                 <Button variant="ghost" className="w-full justify-start">
                   View Profile
                 </Button>
@@ -149,26 +148,25 @@ const Navbar = () => {
 
             <NavLinks />
 
-            {isAuthenticated && (
+            {user && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center space-x-2">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.profilePicture} />
                       <AvatarFallback>
-                        {user?.name?.split(' ').map(n => n[0]).join('')}
+                        {user.firstName[0]}{user.lastName[0]}
                       </AvatarFallback>
                     </Avatar>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="px-2 py-1.5 text-sm">
-                    <div className="font-medium">{user?.name}</div>
-                    <div className="text-muted-foreground">{user?.points} points</div>
+                    <div className="font-medium">{user.firstName} {user.lastName}</div>
+                    <div className="text-muted-foreground">{user.email}</div>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to={`/profile/${user?.id}`}>View Profile</Link>
+                    <Link to={`/profile/${user.id}`}>View Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/leaderboard">My Points</Link>
@@ -207,17 +205,16 @@ const Navbar = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-64">
                 <div className="flex flex-col space-y-4 mt-8">
-                  {isAuthenticated && (
+                  {user && (
                     <div className="flex items-center space-x-3 pb-4 border-b">
                       <Avatar className="h-10 w-10">
-                        <AvatarImage src={user?.profilePicture} />
                         <AvatarFallback>
-                          {user?.name?.split(' ').map(n => n[0]).join('')}
+                          {user.firstName[0]}{user.lastName[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-medium text-sm">{user?.name}</div>
-                        <div className="text-muted-foreground text-xs">{user?.points} points</div>
+                        <div className="font-medium text-sm">{user.firstName} {user.lastName}</div>
+                        <div className="text-muted-foreground text-xs">{user.email}</div>
                       </div>
                     </div>
                   )}
@@ -231,6 +228,4 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

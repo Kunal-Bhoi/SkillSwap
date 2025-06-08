@@ -1,6 +1,7 @@
 /Users/kunalshantarambhoi/Documents/Java_Projects/SkillSwap/backend/src/main/java/com/skillswap/SkillSwapApplication.java
 /Users/kunalshantarambhoi/Documents/Java_Projects/SkillSwap/backend/src/main/java/com/skillswap/auth/JwtAuthFilter.java
 /Users/kunalshantarambhoi/Documents/Java_Projects/SkillSwap/backend/src/main/java/com/skillswap/config/SkillSwapConfiguration.java
+/Users/kunalshantarambhoi/Documents/Java_Projects/SkillSwap/backend/src/main/java/com/skillswap/filters/CORSFilter.java
 /Users/kunalshantarambhoi/Documents/Java_Projects/SkillSwap/backend/src/main/java/com/skillswap/health/DatabaseHealthCheck.java
 /Users/kunalshantarambhoi/Documents/Java_Projects/SkillSwap/backend/src/main/java/com/skillswap/model/User.java
 /Users/kunalshantarambhoi/Documents/Java_Projects/SkillSwap/backend/src/main/java/com/skillswap/resources/AuthResource.java

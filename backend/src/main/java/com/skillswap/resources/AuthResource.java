@@ -6,10 +6,8 @@ import com.skillswap.service.AuthService;
 import io.dropwizard.auth.Auth;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 import org.jdbi.v3.core.Jdbi;
 
 import java.util.HashMap;
@@ -38,7 +36,7 @@ public class AuthResource {
             );
 
             String token = authService.generateToken(user);
-            return Response.ok(createAuthResponse(user, token)).build();
+            return createAuthResponse(user, token);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(Map.of("error", e.getMessage()))
@@ -53,7 +51,7 @@ public class AuthResource {
         
         if (user.isPresent()) {
             String token = authService.generateToken(user.get());
-            return Response.ok(createAuthResponse(user.get(), token)).build();
+            return createAuthResponse(user.get(), token);
         }
 
         return Response.status(Response.Status.UNAUTHORIZED)
@@ -63,17 +61,26 @@ public class AuthResource {
 
     @POST
     @Path("/logout")
-    public Response logout(@Context SecurityContext securityContext) {
-        // Since we're using JWT, we don't need to do anything server-side for logout
-        // The client should remove the token
-        return Response.ok().build();
+    public Response logout() {
+        return Response.ok()
+            .cookie(new NewCookie("jwt", "", "/", null, null, 0, true, true))
+            .build();
     }
 
-    private Map<String, Object> createAuthResponse(User user, String token) {
+    @GET
+    @Path("/me")
+    public Response getCurrentUser(@Auth User user) {
+        return Response.ok(user).build();
+    }
+
+    private Response createAuthResponse(User user, String token) {
         Map<String, Object> response = new HashMap<>();
         response.put("user", user);
         response.put("token", token);
-        return response;
+
+        return Response.ok(response)
+            .cookie(new NewCookie("jwt", token, "/", null, null, 86400, true, true))
+            .build();
     }
 
     public static class SignupRequest {

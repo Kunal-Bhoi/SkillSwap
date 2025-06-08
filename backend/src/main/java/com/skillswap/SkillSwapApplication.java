@@ -3,6 +3,7 @@ package com.skillswap;
 import com.skillswap.config.SkillSwapConfiguration;
 import com.skillswap.health.DatabaseHealthCheck;
 import com.skillswap.resources.AuthResource;
+import com.skillswap.filters.CORSFilter;
 import io.dropwizard.core.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.core.setup.Bootstrap;
@@ -36,15 +37,8 @@ public class SkillSwapApplication extends Application<SkillSwapConfiguration> {
 
     @Override
     public void run(SkillSwapConfiguration configuration, Environment environment) {
-        // Configure CORS
-        environment.jersey().register(new io.dropwizard.jersey.CorsFilter(
-            io.dropwizard.jersey.CorsFilter.builder()
-                .allowedOrigins("http://localhost:5173") // Frontend URL
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("Authorization", "Content-Type")
-                .allowCredentials(true)
-                .build()
-        ));
+        // Register CORS filter
+        environment.jersey().register(new CORSFilter());
 
         // Set up database
         final JdbiFactory factory = new JdbiFactory();

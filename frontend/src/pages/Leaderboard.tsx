@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-const Leaderboard = () => {
+export function Leaderboard() {
   // Mock data - TODO: Replace with API calls
   const [monthlyLeaders] = useState([
     {
@@ -251,6 +250,4 @@ const Leaderboard = () => {
       </div>
     </div>
   );
-};
-
-export default Leaderboard;
+}

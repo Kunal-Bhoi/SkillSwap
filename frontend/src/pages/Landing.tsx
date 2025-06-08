@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-const Landing = () => {
+export function Landing() {
   const features = [
     {
       step: '1',
@@ -219,6 +218,4 @@ const Landing = () => {
       </section>
     </div>
   );
-};
-
-export default Landing;
+}

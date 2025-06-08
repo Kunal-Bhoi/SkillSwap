@@ -18,7 +18,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const MyServices = () => {
+export function MyServices() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('requests');
 
@@ -470,6 +470,4 @@ const MyServices = () => {
       </div>
     </div>
   );
-};
-
-export default MyServices;
+}

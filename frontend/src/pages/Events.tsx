@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 
-const Events = () => {
+export function Events() {
   // Mock data - TODO: Replace with API calls
   const [events] = useState([
     {
@@ -173,6 +172,4 @@ const Events = () => {
       </div>
     </div>
   );
-};
-
-export default Events;
+}

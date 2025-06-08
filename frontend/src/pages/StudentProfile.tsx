@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
-const StudentProfile = () => {
+export function StudentProfile() {
   const { userId } = useParams();
   const { user } = useAuth();
 
@@ -142,6 +142,4 @@ const StudentProfile = () => {
       </div>
     </div>
   );
-};
-
-export default StudentProfile; 
+} 

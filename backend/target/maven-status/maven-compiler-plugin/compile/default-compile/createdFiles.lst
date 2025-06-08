@@ -1,4 +1,5 @@
 com/skillswap/SkillSwapApplication.class
+com/skillswap/filters/CORSFilter.class
 com/skillswap/resources/AuthResource$SignupRequest.class
 com/skillswap/config/SkillSwapConfiguration$MigrationsConfig.class
 com/skillswap/model/User.class

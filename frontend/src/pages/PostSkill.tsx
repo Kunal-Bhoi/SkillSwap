@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -21,7 +20,7 @@ interface SkillForm {
   availability: string;
 }
 
-const PostSkill = () => {
+export function PostSkill() {
   const navigate = useNavigate();
   const [isFree, setIsFree] = useState(false);
   
@@ -216,6 +215,4 @@ const PostSkill = () => {
       </div>
     </div>
   );
-};
-
-export default PostSkill;
+}
