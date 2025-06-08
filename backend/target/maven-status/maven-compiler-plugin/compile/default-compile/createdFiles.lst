@@ -1,0 +1,13 @@
+com/skillswap/SkillSwapApplication.class
+com/skillswap/resources/AuthResource$SignupRequest.class
+com/skillswap/config/SkillSwapConfiguration$MigrationsConfig.class
+com/skillswap/model/User.class
+com/skillswap/auth/JwtAuthFilter$1.class
+com/skillswap/config/SkillSwapConfiguration.class
+com/skillswap/service/AuthService.class
+com/skillswap/config/SkillSwapConfiguration$JwtConfig.class
+com/skillswap/auth/JwtAuthFilter.class
+com/skillswap/health/DatabaseHealthCheck.class
+com/skillswap/resources/AuthResource.class
+com/skillswap/SkillSwapApplication$1.class
+com/skillswap/resources/AuthResource$LoginRequest.class

@@ -1,0 +1,30 @@
+server:
+  applicationContextPath: /api
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
+
+database:
+  driverClass: org.postgresql.Driver
+  url: jdbc:postgresql://ep-shiny-mud-a86r2nw6-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&user=neondb_owner&password=npg_Ngmio0kq5apF
+  user: neondb_owner
+  password: ${DB_PASSWORD}
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  validationQuery: "SELECT 1"
+  validationQueryTimeout: 3s
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+
+jwt:
+  secret: "ba082824a8a3e39d04b6680d23c60070f966d169ebc0bdae43230e34ffa64f36"
+  expiration: 86400000 # 24 hours in milliseconds
+
+migrations:
+  enabled: true
+  locations: src/main/resources/migrations 
